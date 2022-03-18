@@ -22,7 +22,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
     FragmentLoginBinding::inflate
 ) {
 
-    private val viewModel by viewModels<AuthViewModel>()
+//    private val viewModel by viewModels<AuthViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,21 +30,21 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
         binding.progressbar.visible(false)
         binding.buttonLogin.enable(false)
 
-        viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
-            binding.progressbar.visible(it is Resource.Loading)
-            when (it) {
-                is Resource.Success -> {
-                    lifecycleScope.launch {
-                        viewModel.saveAccessTokens(
-                            it.value.user.access_token!!,
-                            it.value.user.refresh_token!!
-                        )
-                        requireActivity().startNewActivity(HomeActivity::class.java)
-                    }
-                }
-                is Resource.Failure -> handleApiError(it) { login() }
-            }
-        })
+//        viewModel.loginResponse.observe(viewLifecycleOwner, Observer {
+//            binding.progressbar.visible(it is Resource.Loading)
+//            when (it) {
+//                is Resource.Success -> {
+//                    lifecycleScope.launch {
+//                        viewModel.saveAccessTokens(
+//                            it.value.user.access_token!!,
+//                            it.value.user.refresh_token!!
+//                        )
+//                        requireActivity().startNewActivity(HomeActivity::class.java)
+//                    }
+//                }
+//                is Resource.Failure -> handleApiError(it) { login() }
+//            }
+//        })
 
         binding.editTextTextPassword.addTextChangedListener {
             val email = binding.editTextTextEmailAddress.text.toString().trim()
@@ -59,6 +59,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
     private fun login() {
         val email = binding.editTextTextEmailAddress.text.toString().trim()
         val password = binding.editTextTextPassword.text.toString().trim()
-        viewModel.login(email, password)
+//        viewModel.login(email, password)
+        if (email.equals("admin") && password.equals("1234")){
+            requireActivity().startNewActivity(HomeActivity::class.java)
+        }
     }
 }
